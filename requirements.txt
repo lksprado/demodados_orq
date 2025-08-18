@@ -1,0 +1,15 @@
+selenium
+pandas
+openpyxl
+xlrd
+requests
+beautifulsoup4
+python-dotenv
+undetected-chromedriver
+setuptools
+python-telegram-bot
+playwright
+dbt-postgres
+unidecode
+pandera
+pandera[io]

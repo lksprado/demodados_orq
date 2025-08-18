@@ -1,0 +1,12 @@
+{"timestamp":"2025-08-12T00:58:26.028777","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-08-12T00:58:26.029525","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/test_demodadosdw.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-08-12T00:58:26.075526Z","level":"info","event":"Iniciando teste","chan":"stdout","logger":"task"}
+{"timestamp":"2025-08-12T00:58:26.075919Z","level":"info","event":"Fazendo query","chan":"stdout","logger":"task"}
+{"timestamp":"2025-08-12T00:58:26.077234","level":"warning","event":"Using Connection.get_connection_from_secrets from `airflow.models` is deprecated.Please use `from airflow.sdk import Connection` instead","category":"DeprecationWarning","filename":"/home/airflow/.local/lib/python3.12/site-packages/airflow/models/connection.py","lineno":471,"logger":"py.warnings"}
+{"timestamp":"2025-08-12T00:58:26.241437","level":"info","event":"Connection Retrieved 'demodadosdw'","logger":"airflow.hooks.base"}
+{"timestamp":"2025-08-12T00:58:26.268683","level":"info","event":"Running statement: SELECT 1, parameters: None","logger":"airflow.task.hooks.airflow.providers.postgres.hooks.postgres.PostgresHook"}
+{"timestamp":"2025-08-12T00:58:26.270753","level":"info","event":"Rows affected: 1","logger":"airflow.task.hooks.airflow.providers.postgres.hooks.postgres.PostgresHook"}
+{"timestamp":"2025-08-12T00:58:26.271862Z","level":"info","event":"resposta query 1","chan":"stdout","logger":"task"}
+{"timestamp":"2025-08-12T00:58:26.279699","level":"info","event":"Connection Retrieved 'demodadosdw'","logger":"airflow.hooks.base"}
+{"timestamp":"2025-08-12T00:58:26.279864","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.decorators.python._PythonDecoratedOperator"}
+{"timestamp":"2025-08-12T00:58:26.280273Z","level":"info","event":"✅ Conexão OK: host=host.docker.internal db=demodados user=postgres port=5432","chan":"stdout","logger":"task"}
