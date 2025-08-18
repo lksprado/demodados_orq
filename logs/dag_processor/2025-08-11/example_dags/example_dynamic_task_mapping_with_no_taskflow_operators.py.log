@@ -1,2 +1,0 @@
-{"timestamp":"2025-08-11T21:36:47.698788","level":"info","event":"Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_dynamic_task_mapping_with_no_taskflow_operators.py","logger":"airflow.models.dagbag.DagBag"}
-{"timestamp":"2025-08-11T21:37:18.807677","level":"info","event":"Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_dynamic_task_mapping_with_no_taskflow_operators.py","logger":"airflow.models.dagbag.DagBag"}

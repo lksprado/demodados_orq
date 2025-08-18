@@ -1,8 +1,0 @@
-{"timestamp":"2025-08-12T00:55:41.875045","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
-{"timestamp":"2025-08-12T00:55:41.875546","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/test_demodadosdw.py","logger":"airflow.models.dagbag.DagBag"}
-{"timestamp":"2025-08-12T00:55:42.103531Z","level":"info","event":"Iniciando teste","chan":"stdout","logger":"task"}
-{"timestamp":"2025-08-12T00:55:42.103732Z","level":"info","event":"Fazendo query","chan":"stdout","logger":"task"}
-{"timestamp":"2025-08-12T00:55:42.104618","level":"warning","event":"Using Connection.get_connection_from_secrets from `airflow.models` is deprecated.Please use `from airflow.sdk import Connection` instead","category":"DeprecationWarning","filename":"/home/airflow/.local/lib/python3.12/site-packages/airflow/models/connection.py","lineno":471,"logger":"py.warnings"}
-{"timestamp":"2025-08-12T00:55:42.110431","level":"info","event":"Connection Retrieved 'demodadosdw'","logger":"airflow.hooks.base"}
-{"timestamp":"2025-08-12T00:56:27.252925Z","level":"error","event":"Server indicated the task shouldn't be running anymore. Terminating process","detail":{"detail":{"reason":"not_running","message":"TI is no longer in the running state and task should terminate","current_state":"failed"}},"logger":"task"}
-{"timestamp":"2025-08-12T00:56:32.274086Z","level":"error","event":"Task killed!","logger":"task"}

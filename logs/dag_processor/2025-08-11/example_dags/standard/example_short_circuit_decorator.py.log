@@ -1,3 +1,0 @@
-{"timestamp":"2025-08-11T21:36:41.064755","level":"info","event":"Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/standard/example_short_circuit_decorator.py","logger":"airflow.models.dagbag.DagBag"}
-{"timestamp":"2025-08-11T21:37:11.380530","level":"info","event":"Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/standard/example_short_circuit_decorator.py","logger":"airflow.models.dagbag.DagBag"}
-{"timestamp":"2025-08-11T21:37:41.768758","level":"info","event":"Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/standard/example_short_circuit_decorator.py","logger":"airflow.models.dagbag.DagBag"}

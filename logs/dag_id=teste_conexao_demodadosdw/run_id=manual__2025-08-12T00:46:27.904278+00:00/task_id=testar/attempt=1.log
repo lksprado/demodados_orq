@@ -1,6 +1,0 @@
-{"timestamp":"2025-08-12T00:46:28.859942","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
-{"timestamp":"2025-08-12T00:46:28.860656","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/test_demodadosdw.py","logger":"airflow.models.dagbag.DagBag"}
-{"timestamp":"2025-08-12T00:46:29.009559","level":"warning","event":"Using Connection.get_connection_from_secrets from `airflow.models` is deprecated.Please use `from airflow.sdk import Connection` instead","category":"DeprecationWarning","filename":"/home/airflow/.local/lib/python3.12/site-packages/airflow/models/connection.py","lineno":471,"logger":"py.warnings"}
-{"timestamp":"2025-08-12T00:46:29.020071","level":"info","event":"Connection Retrieved 'demodadosdw'","logger":"airflow.hooks.base"}
-{"timestamp":"2025-08-12T00:48:29.433563Z","level":"error","event":"Server indicated the task shouldn't be running anymore. Terminating process","detail":{"detail":{"reason":"not_found","message":"Task Instance not found"}},"logger":"task"}
-{"timestamp":"2025-08-12T00:48:34.444315Z","level":"error","event":"Task killed!","logger":"task"}
