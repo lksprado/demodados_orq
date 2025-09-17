@@ -1,0 +1,3 @@
+[submodule "dbt/demodadosdw"]
+	path = dbt/demodadosdw
+	url = https://github.com/lksprado/demodadosdw
