@@ -1,7 +1,23 @@
+version: '3.8'
+
 services:
   scheduler:
     volumes:
-      - ./dbt/demodadosdw/:/usr/local/airflow/dbt/demodadosdw
+      - type: bind
+        source: /media/lucas/Files/2.Projetos/0.mylake
+        target: /usr/local/airflow/mylake
+  webserver:
+    volumes:
+      - type: bind
+        source: /media/lucas/Files/2.Projetos/0.mylake
+        target: /usr/local/airflow/mylake
+  triggerer:
+    volumes:
+      - type: bind
+        source: /media/lucas/Files/2.Projetos/0.mylake
+        target: /usr/local/airflow/mylake
   dag-processor:
     volumes:
-      - ./dbt/demodadosdw/:/usr/local/airflow/dbt/demodadosdw
+      - type: bind
+        source: /media/lucas/Files/2.Projetos/0.mylake
+        target: /usr/local/airflow/mylake

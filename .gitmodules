@@ -2,8 +2,10 @@
 	path = dbt/demodadosdw
 	url = https://github.com/lksprado/demodadosdw
 [submodule "airflow3/include/ingestor"]
-	path = airflow3/include/ingestor
-	url = https://github.com/lksprado/demodados.git
+    path = airflow3/include/ingestor
+    url = https://github.com/lksprado/demodados.git
+    branch = main
 [submodule "include/ingestor"]
-	path = include/ingestor
-	url = https://github.com/lksprado/demodados.git
+    path = include/ingestor
+    url = https://github.com/lksprado/demodados.git
+    branch = main
