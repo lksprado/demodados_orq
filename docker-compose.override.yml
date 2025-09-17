@@ -1,0 +1,7 @@
+services:
+  scheduler:
+    volumes:
+      - ./dbt/demodadosdw/:/usr/local/airflow/dbt/demodadosdw
+  dag-processor:
+    volumes:
+      - ./dbt/demodadosdw/:/usr/local/airflow/dbt/demodadosdw
