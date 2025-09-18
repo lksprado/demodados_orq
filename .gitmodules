@@ -4,6 +4,6 @@
 [submodule "airflow3/include/ingestor"]
 	path = airflow3/include/ingestor
 	url = https://github.com/lksprado/demodados.git
-[submodule "include/ingestor"]
-	path = include/ingestor
+[submodule "include/local_setup"]
+	path = include/local_setup
 	url = https://github.com/lksprado/demodados.git
