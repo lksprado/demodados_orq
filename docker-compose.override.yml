@@ -1,7 +1,18 @@
 services:
   scheduler:
+    user: root
+    environment:
+      PYTHONPATH: /usr/local/airflow
     volumes:
       - ./dbt/demodadosdw/:/usr/local/airflow/dbt/demodadosdw
+      - ./include/local_setup/src:/usr/local/airflow/src
+      - /media/lucas/Files/2.Projetos/0.mylake:/usr/local/airflow/mylake
+
   dag-processor:
+    user: root
+    environment:
+      PYTHONPATH: /usr/local/airflow
     volumes:
       - ./dbt/demodadosdw/:/usr/local/airflow/dbt/demodadosdw
+      - ./include/local_setup/src:/usr/local/airflow/src
+      - /media/lucas/Files/2.Projetos/0.mylake:/usr/local/airflow/mylake
