@@ -26,7 +26,7 @@ PIPELINE_GOVERNISMO_DEPUTADOS_CONFIG_PRD = {
 
 @dag(
     dag_id="governismo_deputados_pipeline",
-    start_date=datetime(2025, 9, 25),
+    start_date=datetime(2025, 10, 25),
     schedule="@weekly",
     catchup=False,
     tags=["radar_congresso"],
