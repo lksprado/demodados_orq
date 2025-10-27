@@ -36,7 +36,7 @@ my_cosmos_dag = DbtDag(
     schedule="@weekly",
     start_date=datetime(2025, 10, 25, 21, 5),
     catchup=False,
-    dag_id=f"dag_demodados_dw_{dbt_env}",
+    dag_id=f"dag_demodados_dw_{dbt_env}_sync",
     default_args={"retries": 2},
     #atualizando
 )

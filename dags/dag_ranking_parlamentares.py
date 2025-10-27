@@ -1,63 +1,63 @@
 import logging
 from datetime import datetime
 
+import pandas as pd
 from airflow.decorators import dag, task
 
 from src.utils.pipeline_cfg import PipelineConfig, GenericETL
-from src.pipelines.legislativo.radar_governismo import transform_governismo
-from src.pipelines.legislativo.schema import GovernismoSchema
+from src.pipelines.legislativo.ranking_parlamentares import transform_parlamentares
+from src.pipelines.legislativo.schema import ParlamentarRankingSchema
 from src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
-logger = logging.getLogger("DAG: governismo")
+
+logger = logging.getLogger("DAG: ranking_parlamentares")
 
 
-PIPELINE_GOVERNISMO_SENADORES_CONFIG_PRD = {
-    "url_base": "https://radar.congressoemfoco.com.br/api/governismo?casa=senado",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/radar_congresso/governismo/",
-    "landing_file": "radar_governismo_senadores.json",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/radar_congresso/governismo/",
-    "bronze_file": "radar_governismo_senadores.csv",
-    "db_table": "stg_radar_governismo_senadores",
+PIPELINE_PARLAMENTARES_CONFIG_PRD = {
+    "url_base": "https://apirest2.politicos.org.br/api/parliamentarianranking?Include=Parliamentarian.State&Include=Parliamentarian.Party&Include=Parliamentarian.Organ&Include=Parliamentarian&take=700&StatusId=1&OrderBy=scoreRanking&Year=2025",
+    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/ranking/parlamentares/",
+    "landing_file": "ranking_parlamentares.json",
+    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/ranking/parlamentares/",
+    "bronze_file": "ranking_parlamentares.csv",
+    "db_table": "stg_ranking_parlamentares",
 }
 
+
 @dag(
-    dag_id="governismo_senadores_pipeline",
+    dag_id="ranking_parlamentares_pipeline",
     start_date=datetime(2025, 10, 24),
     schedule="@weekly",
     catchup=False,
-    tags=["radar_congresso"],
+    tags=["ranking_politicos"],
 )
-def governismo_pipeline():
-    target = 'raw_radar_governismo_senadores'
+def parlamentares_pipeline():
+    target = 'raw_ranking_parlamentares'
     
-    # Hook/engine do Postgres para dentro da DAG
     hook = PostgresHook(postgres_conn_id="demodadosdw")
     engine = hook.get_sqlalchemy_engine()
-    pg = PostgreSQLManager(engine=engine)  # usa engine do Airflow
-
-    # Instanciações
-    cfg = PipelineConfig(**PIPELINE_GOVERNISMO_SENADORES_CONFIG_PRD)
+    pg = PostgreSQLManager(engine=engine)  # usa engine externa
+    # Instancia o ETL genérico
+    cfg = PipelineConfig(**PIPELINE_PARLAMENTARES_CONFIG_PRD)
     etl = GenericETL(
         cfg=cfg,
-        extract_fn=None,                # usa extração genérica (GET único)
-        load_fn=None,   # nosso adapter que lê bronze e carrega
-        validator=GovernismoSchema,
+        extract_fn=None,
+        load_fn=pg,
+        validator=ParlamentarRankingSchema,
         log=logger,
     )
 
-    # ------- Tasks (cada uma usa somente cfg/etl) -------
     @task
     def t_extract():
-        etl.extract()           # escreve cfg.landing_filepath
+        etl.extract()
 
     @task
     def t_transform():
-        transform_governismo(cfg)   # escreve cfg.bronze_filepath
+        transform_parlamentares(cfg)
 
     @task
     def t_validate():
-        etl.validate()          # valida cfg.bronze_filepath
+        etl.validate()
 
     @task
     def t_load_staging():
@@ -66,14 +66,14 @@ def governismo_pipeline():
         import pandas as pd 
         df = pd.read_csv(etl.cfg.bronze_filepath,sep=';')
         pg.send_df_to_db(df, table_name=etl.cfg.db_table)
-
+        
+        
     @task
     def t_check_staging_count():
         result = pg.fetchone(f"SELECT COUNT(*) FROM raw.{etl.cfg.db_table}")
-        n = result[0] if result else 0
-        if n == 0:
+        if not result or result[0] == 0:
             raise ValueError("Staging está vazia, abortando promoção para raw")
-        logger.info(f"✅ Staging tem {n} linhas")
+        logger.info(f"✅ Staging tem {result[0]} linhas")
 
     @task
     def t_insert():
@@ -85,7 +85,9 @@ def governismo_pipeline():
 
     @task
     def t_drop_stg_if_exists():
-        pg.execute_query(f"DROP TABLE IF EXISTS raw.{etl.cfg.db_table};")
+        pg.execute_query(f"""
+            DROP TABLE IF EXISTS raw.{etl.cfg.db_table};
+        """)
 
     # ---------- Encadeamento ----------
     extract = t_extract()
@@ -97,6 +99,6 @@ def governismo_pipeline():
     drop_staging = t_drop_stg_if_exists()
     
     extract >> transform >> validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
-    
-# Necessário para o Airflow reconhecer a DAG
-dag = governismo_pipeline()
+
+# 👇 necessário para o Airflow reconhecer a DAG
+dag = parlamentares_pipeline()

@@ -1,63 +1,62 @@
 import logging
 from datetime import datetime
 
-import pandas as pd
 from airflow.decorators import dag, task
 
 from src.utils.pipeline_cfg import PipelineConfig, GenericETL
-from src.pipelines.legislativo.parlamento_senadores import transform_senadores
-from src.pipelines.legislativo.schema import SenadorSchema
+from src.pipelines.legislativo.parlamento_deputados import extract_deputados, transform_deputados
+from src.pipelines.legislativo.schema import DeputadoSchema
 from src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 logger = logging.getLogger("DAG: governismo")
 
 
-PIPELINE_SENADORES_CONFIG_PRD = {
-    "url_base": "https://legis.senado.leg.br/dadosabertos/senador/lista/atual?v=4",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/senado/senadores/",
-    "landing_file": "senado_senadores.json",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/senado/senadores/",
-    "bronze_file": "senadores_senadores.csv",
-    "db_table": "stg_parlamento_senadores_raw",
+PIPELINE_DEPUTADOS_CONFIG_PRD = {
+    "parameter_file": "./src/params/id_deputados.csv",
+    "url_base": "https://dadosabertos.camara.leg.br/api/v2/deputados/",
+    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/camara/deputados/",
+    "landing_file": "parlamento_deputados.json",
+    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/camara/deputados/",
+    "bronze_file": "parlamento_deputados.csv",
+    "db_table": "stg_parlamento_deputados",
 }
 
 @dag(
-    dag_id="senadores_pipeline",
+    dag_id="deputados_pipeline",
     start_date=datetime(2025, 9, 25),
     # schedule="@weekly",
     schedule=None,
     catchup=False,
     tags=["dadosabertos"],
 )
-def senadores_pipeline():
-    target = 'raw_parlamento_senadores' 
+def deputados_pipeline():
+    target =  'raw_parlamento_deputados'
     
     hook = PostgresHook(postgres_conn_id="demodadosdw")
     engine = hook.get_sqlalchemy_engine()
     pg = PostgreSQLManager(engine=engine)  # usa engine externa
     # Instancia o ETL genérico
-    cfg = PipelineConfig(**PIPELINE_SENADORES_CONFIG_PRD)
+    cfg = PipelineConfig(**PIPELINE_DEPUTADOS_CONFIG_PRD)
     etl = GenericETL(
         cfg=cfg,
-        extract_fn=None,
-        load_fn=pg,
-        validator=SenadorSchema,
+        extract_fn=extract_deputados,
+        load_fn=None,
+        validator=DeputadoSchema,
         log=logger,
     )
 
     @task
     def t_extract():
-        etl.extract()
+        etl.extract(cfg)
 
     @task
     def t_transform():
-        transform_senadores(cfg)
+        transform_deputados(cfg)
 
     @task
     def t_validate():
         etl.validate()
-
 
     @task
     def t_load_staging():
@@ -88,16 +87,16 @@ def senadores_pipeline():
             DROP TABLE IF EXISTS raw.{etl.cfg.db_table};
         """)
 
-    # ---------- Encadeamento ----------
-    extract = t_extract()
-    transform = t_transform()
+    #extract = t_extract()
+    # transform = t_transform()
     validate  = t_validate()
     load_staging = t_load_staging()
     check_staging = t_check_staging_count()
     insert_into_target = t_insert()
     drop_staging = t_drop_stg_if_exists()
     
-    extract >> transform >> validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
-
-# necessário para o Airflow reconhecer a DAG
-dag = senadores_pipeline()
+    # extract >> transform >> validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
+    validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
+    
+# 👇 necessário para o Airflow reconhecer a DAG
+dag = deputados_pipeline()
