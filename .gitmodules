@@ -1,8 +1,7 @@
 [submodule "dbt/demodadosdw"]
 	path = dbt/demodadosdw
-	url = https://github.com/lksprado/demodadosdw.git
-    branch = master
-[submodule "include/ingestor"]
-	path = include/ingestor
+	url = https://github.com/lksprado/demodadosdw
+[submodule "include/local_setup"]
+	path = include/local_setup
 	url = https://github.com/lksprado/demodados.git
 	branch = main
