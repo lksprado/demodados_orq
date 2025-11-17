@@ -2,7 +2,11 @@ version: '3.8'
 
 services:
   scheduler:
+    user: root
+    environment:
+      PYTHONPATH: /usr/local/airflow
     volumes:
+<<<<<<< HEAD
       - type: bind
         source: /media/lucas/Files/2.Projetos/0.mylake
         target: /usr/local/airflow/mylake
@@ -16,8 +20,23 @@ services:
       - type: bind
         source: /media/lucas/Files/2.Projetos/0.mylake
         target: /usr/local/airflow/mylake
+=======
+      - ./dbt/demodadosdw/:/usr/local/airflow/dbt/demodadosdw
+      - ./include/local_setup/src:/usr/local/airflow/src
+      - /media/lucas/Files/2.Projetos/0.mylake:/usr/local/airflow/mylake
+
+>>>>>>> voltar-um
   dag-processor:
+    user: root
+    environment:
+      PYTHONPATH: /usr/local/airflow
     volumes:
+<<<<<<< HEAD
       - type: bind
         source: /media/lucas/Files/2.Projetos/0.mylake
         target: /usr/local/airflow/mylake
+=======
+      - ./dbt/demodadosdw/:/usr/local/airflow/dbt/demodadosdw
+      - ./include/local_setup/src:/usr/local/airflow/src
+      - /media/lucas/Files/2.Projetos/0.mylake:/usr/local/airflow/mylake
+>>>>>>> voltar-um

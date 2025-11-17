@@ -1,2 +1,6 @@
+api-server:
+    port: "8090"
+postgres:
+    port: "5436"
 project:
     name: airflow-3

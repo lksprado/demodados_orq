@@ -1,6 +1,7 @@
 from airflow.models import Variable
 from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig
 from cosmos.profiles import PostgresUserPasswordProfileMapping
+from airflow.sensors.external_task import ExternalTaskSensor
 import os
 from pendulum import datetime
 
@@ -33,9 +34,8 @@ my_cosmos_dag = DbtDag(
         "target": profile_config.target_name,
     },
     schedule="@weekly",
-    start_date=datetime(2025, 9, 15),
+    # start_date=datetime(2025, 10, 25, 21, 5),
     catchup=False,
-    dag_id=f"dag_demodados_dw_{dbt_env}",
+    dag_id=f"dag_demodados_dw_{dbt_env}_full",
     default_args={"retries": 2},
-    #atualizando
 )
