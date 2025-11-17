@@ -7,6 +7,7 @@ Dependências
 Pastas `./dbt` e `./include/local_setup` são submódulos. Após commit e push nos repos originais, para trazer códigos atualizados executar:
 ```shell
 git pull origin main
+git submodule update --remote
 ```
 
 # Troubleshooting

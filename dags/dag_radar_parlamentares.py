@@ -28,7 +28,7 @@ PIPELINE_PARLAMENTARES_CONFIG_PRD = {
     start_date=datetime(2025, 10, 24),
     schedule="@weekly",
     catchup=False,
-    tags=["governismo", "radar_congresso"],
+    tags=["radar_congresso"],
 )
 def parlamentares_pipeline():
     target = 'raw_radar_parlamentares'
@@ -73,7 +73,7 @@ def parlamentares_pipeline():
     
         import pandas as pd 
         df = pd.read_csv(etl.cfg.bronze_filepath,sep=';')
-        pg.send_df_to_db(df, table_name=etl.cfg.db_table)
+        pg.send_df_to_db(df, table_name=etl.cfg.db_table, filename=etl.cfg.bronze_filepath.name)
 
     @task
     def t_check_staging_count():
@@ -86,8 +86,11 @@ def parlamentares_pipeline():
     @task
     def t_insert():
         pg.execute_query(f"""
+            CREATE TABLE IF NOT EXISTS raw.{target} 
+            AS SELECT * FROM raw.{etl.cfg.db_table} LIMIT 0;    
+            
             TRUNCATE TABLE raw.{target};
-            INSERT INTO raw.{target} AS
+            INSERT INTO raw.{target}
             SELECT * FROM raw.{etl.cfg.db_table};
         """)
 

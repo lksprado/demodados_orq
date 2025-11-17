@@ -4,59 +4,53 @@ from datetime import datetime
 from airflow.decorators import dag, task
 
 from src.utils.pipeline_cfg import PipelineConfig, GenericETL
-from src.pipelines.legislativo.parlamento_deputados import extract_deputados, transform_deputados
-from src.pipelines.legislativo.schema import DeputadoSchema
+from src.pipelines.legislativo.ecidadania_big_numbers import extraction_big_numbers, transform_bignumbers
 from src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
-logger = logging.getLogger("DAG: governismo")
+logger = logging.getLogger("DAG: Ecidadania BigNumbers")
 
 
-PIPELINE_DEPUTADOS_CONFIG_PRD = {
-    "parameter_file": "./src/params/id_deputados.csv",
-    "url_base": "https://dadosabertos.camara.leg.br/api/v2/deputados/",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/camara/deputados/",
-    "landing_file": "parlamento_deputados.json",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/camara/deputados/",
-    "bronze_file": "parlamento_deputados.csv",
-    "db_table": "stg_parlamento_deputados",
+PIPELINE_CONFIG_PRD = {
+    "url_base": "https://www12.senado.leg.br/ecidadania/principalmateria",
+    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/senado/ecidadania/big_numbers",
+    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/senado/ecidadania/big_numbers",
+    "bronze_file": "ecidadania_bignumbers_consolidado.csv",
+    "db_table": "stg_ecidadania_bignumbers_raw",
 }
 
 @dag(
-    dag_id="deputados_pipeline",
-    start_date=datetime(2025, 9, 25),
-    # schedule="@weekly",
-    schedule=None,
+    dag_id="ecidadania_bignumbers_pipeline",
+    start_date=datetime(2025, 11, 17),
+    schedule="00 15 * * *",
     catchup=False,
-    tags=["camara"],
+    tags=["ecidadania"],
 )
-def deputados_pipeline():
-    target =  'raw_parlamento_deputados'
+
+def bignumbers_pipeline():
+    target =  'raw_ecidadania_bignumbers'
     
     hook = PostgresHook(postgres_conn_id="demodadosdw")
     engine = hook.get_sqlalchemy_engine()
     pg = PostgreSQLManager(engine=engine)  # usa engine externa
     # Instancia o ETL genérico
-    cfg = PipelineConfig(**PIPELINE_DEPUTADOS_CONFIG_PRD)
+    cfg = PipelineConfig(**PIPELINE_CONFIG_PRD)
     etl = GenericETL(
         cfg=cfg,
-        extract_fn=extract_deputados,
+        extract_fn=extraction_big_numbers,
         load_fn=None,
-        validator=DeputadoSchema,
+        validator=None,
         log=logger,
     )
 
     @task
     def t_extract():
-        etl.extract(cfg)
+        etl.extract()
 
     @task
     def t_transform():
-        transform_deputados(cfg)
+        transform_bignumbers(cfg)
 
-    @task
-    def t_validate():
-        etl.validate()
 
     @task
     def t_load_staging():
@@ -77,7 +71,8 @@ def deputados_pipeline():
     def t_insert():
         pg.execute_query(f"""
             CREATE TABLE IF NOT EXISTS raw.{target} 
-            AS SELECT * FROM raw.{etl.cfg.db_table} LIMIT 0;    
+            AS SELECT * FROM raw.{etl.cfg.db_table} LIMIT 0;            
+            
             TRUNCATE TABLE raw.{target};
             INSERT INTO raw.{target}
             SELECT * FROM raw.{etl.cfg.db_table};
@@ -89,16 +84,15 @@ def deputados_pipeline():
             DROP TABLE IF EXISTS raw.{etl.cfg.db_table};
         """)
 
-    #extract = t_extract()
-    # transform = t_transform()
-    validate  = t_validate()
+    extract = t_extract()
+    transform = t_transform()
     load_staging = t_load_staging()
     check_staging = t_check_staging_count()
     insert_into_target = t_insert()
     drop_staging = t_drop_stg_if_exists()
     
     # extract >> transform >> validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
-    validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
+    extract >> transform >> load_staging >> check_staging >> insert_into_target >> drop_staging
     
 # 👇 necessário para o Airflow reconhecer a DAG
-dag = deputados_pipeline()
+dag = bignumbers_pipeline()
