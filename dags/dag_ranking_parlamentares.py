@@ -11,17 +11,6 @@ from src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 
-logger = logging.getLogger("DAG: ranking_parlamentares")
-
-
-PIPELINE_PARLAMENTARES_CONFIG_PRD = {
-    "url_base": "https://apirest2.politicos.org.br/api/parliamentarianranking?Include=Parliamentarian.State&Include=Parliamentarian.Party&Include=Parliamentarian.Organ&Include=Parliamentarian&take=700&StatusId=1&OrderBy=scoreRanking&Year=2025",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/ranking/parlamentares/",
-    "landing_file": "ranking_parlamentares.json",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/ranking/parlamentares/",
-    "bronze_file": "ranking_parlamentares.csv",
-    "db_table": "stg_ranking_parlamentares",
-}
 
 
 @dag(
@@ -32,6 +21,19 @@ PIPELINE_PARLAMENTARES_CONFIG_PRD = {
     tags=["ranking_politicos"],
 )
 def parlamentares_pipeline():
+
+    logger = logging.getLogger("DAG: ranking_parlamentares")
+
+
+    PIPELINE_PARLAMENTARES_CONFIG_PRD = {
+        "url_base": "https://apirest2.politicos.org.br/api/parliamentarianranking?Include=Parliamentarian.State&Include=Parliamentarian.Party&Include=Parliamentarian.Organ&Include=Parliamentarian&take=700&StatusId=1&OrderBy=scoreRanking&Year=2025",
+        "landing_dir": "/usr/local/airflow/mylake/raw/demodados/ranking/parlamentares/",
+        "landing_file": "ranking_parlamentares.json",
+        "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/ranking/parlamentares/",
+        "bronze_file": "ranking_parlamentares.csv",
+        "db_table": "stg_ranking_parlamentares",
+    }
+
     target = 'raw_ranking_parlamentares'
     
     hook = PostgresHook(postgres_conn_id="demodadosdw")

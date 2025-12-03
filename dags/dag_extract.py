@@ -53,13 +53,14 @@ def extract_pipeline():
     # Você pode ir adicionando/removendo tasks depois, bem fácil.
     #
 
-    @task(task_id="governismo_deputados_trimestre")
-    def export_deputados_trimestre():
-        return _dump_table(schema="marts", table="mrt_governismo_dos_deputados_trimestre")
+    @task(task_id="export_governismo_parlamentares_trimestre")
+    def export_governismo_parlamentares_trimestre():
+        return _dump_table(schema="marts", table="mrt_governismo_parlamentares_trimestral")
 
-    @task(task_id="governismo_senadores_trimestre")
-    def export_senadores_trimestre():
-        return _dump_table(schema="marts", table="mrt_governismo_dos_senadores_trimestre")
+    @task(task_id="export_governismo_parlamentares")
+    def export_governismo_parlamentares():
+        return _dump_table(schema="marts", table="mrt_governismo_parlamentares")
+
 
     @task(task_id="export_obt_parlamentares")
     def export_obt_parlamentares():
@@ -78,8 +79,8 @@ def extract_pipeline():
     # IMPORTANTE:
     # Aqui a gente simplesmente INSTANCIA as tasks.
     # Não vamos encadear com >> porque você pediu que elas sejam independentes.
-    t1 = export_deputados_trimestre()
-    t2 = export_senadores_trimestre()
+    t1 = export_governismo_parlamentares_trimestre()
+    t2 = export_governismo_parlamentares()
     t3 = export_obt_parlamentares()
     t4 = export_bignumbers()
     t5 = export_proposicoes()

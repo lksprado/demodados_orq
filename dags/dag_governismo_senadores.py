@@ -9,17 +9,6 @@ from src.pipelines.legislativo.schema import GovernismoSchema
 from src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
-logger = logging.getLogger("DAG: governismo")
-
-
-PIPELINE_GOVERNISMO_SENADORES_CONFIG_PRD = {
-    "url_base": "https://radar.congressoemfoco.com.br/api/governismo?casa=senado",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/radar_congresso/governismo/",
-    "landing_file": "radar_governismo_senadores.json",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/radar_congresso/governismo/",
-    "bronze_file": "radar_governismo_senadores.csv",
-    "db_table": "stg_radar_governismo_senadores",
-}
 
 @dag(
     dag_id="governismo_senadores_pipeline",
@@ -29,6 +18,19 @@ PIPELINE_GOVERNISMO_SENADORES_CONFIG_PRD = {
     tags=["radar_congresso"],
 )
 def governismo_pipeline():
+
+    logger = logging.getLogger("DAG: governismo")
+
+
+    PIPELINE_GOVERNISMO_SENADORES_CONFIG_PRD = {
+        "url_base": "https://radar.congressoemfoco.com.br/api/governismo?casa=senado",
+        "landing_dir": "/usr/local/airflow/mylake/raw/demodados/radar_congresso/governismo/",
+        "landing_file": "radar_governismo_senadores.json",
+        "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/radar_congresso/governismo/",
+        "bronze_file": "radar_governismo_senadores.csv",
+        "db_table": "stg_radar_governismo_senadores",
+    }
+
     target = 'raw_radar_governismo_senadores'
     
     # Hook/engine do Postgres para dentro da DAG

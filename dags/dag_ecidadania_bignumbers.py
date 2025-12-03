@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 
 from airflow.decorators import dag, task
-
+from pendulum import datetime, duration
 from src.utils.pipeline_cfg import PipelineConfig, GenericETL
 from src.pipelines.legislativo.ecidadania_big_numbers import extraction_big_numbers, transform_bignumbers
 from src.utils.loaders.postgres import PostgreSQLManager
@@ -24,6 +24,12 @@ PIPELINE_CONFIG_PRD = {
     start_date=datetime(2025, 11, 17),
     schedule="00 15 * * *",
     catchup=False,
+    default_args={
+        "retries": 5,
+        "retry_delay": duration(seconds=5),
+        "retry_exponential_backoff": True,
+        "max_retry_delay": duration(hours=1),
+    },
     tags=["ecidadania"],
 )
 

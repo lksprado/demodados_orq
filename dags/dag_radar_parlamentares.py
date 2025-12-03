@@ -10,19 +10,6 @@ from src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 
-logger = logging.getLogger("DAG: radar_parlamentares")
-
-
-PIPELINE_PARLAMENTARES_CONFIG_PRD = {
-    "url_base": "https://radar.congressoemfoco.com.br/api/busca-parlamentar",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/radar_congresso/parlamentares/",
-    "landing_file": "radar_parlamentares.json",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/radar_congresso/parlamentares/",
-    "bronze_file": "radar_parlamentares.csv",
-    "db_table": "stg_radar_parlamentares",
-}
-
-
 @dag(
     dag_id="radar_parlamentares_pipeline",
     start_date=datetime(2025, 10, 24),
@@ -31,6 +18,20 @@ PIPELINE_PARLAMENTARES_CONFIG_PRD = {
     tags=["radar_congresso"],
 )
 def parlamentares_pipeline():
+
+    logger = logging.getLogger("DAG: radar_parlamentares")
+
+
+    PIPELINE_PARLAMENTARES_CONFIG_PRD = {
+        "url_base": "https://radar.congressoemfoco.com.br/api/busca-parlamentar",
+        "landing_dir": "/usr/local/airflow/mylake/raw/demodados/radar_congresso/parlamentares/",
+        "landing_file": "radar_parlamentares.json",
+        "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/radar_congresso/parlamentares/",
+        "bronze_file": "radar_parlamentares.csv",
+        "db_table": "stg_radar_parlamentares",
+    }
+
+
     target = 'raw_radar_parlamentares'
     
     hook = PostgresHook(postgres_conn_id="demodadosdw")

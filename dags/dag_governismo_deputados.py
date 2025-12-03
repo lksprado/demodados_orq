@@ -10,18 +10,7 @@ from src.pipelines.legislativo.schema import GovernismoSchema
 from src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
-logger_g = logging.getLogger("DAG: governismo")
 
-
-# Configuração (pode vir de .env, Airflow Variables, etc.)
-PIPELINE_GOVERNISMO_DEPUTADOS_CONFIG_PRD = {
-    "url_base": "https://radar.congressoemfoco.com.br/api/governismo?casa=camara",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/radar_congresso/governismo/",
-    "landing_file": "radar_governismo_deputados.json",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/radar_congresso/governismo/",
-    "bronze_file": "radar_governismo_deputados.csv",
-    "db_table": "stg_radar_governismo_deputados",
-}
 
 
 @dag(
@@ -32,6 +21,19 @@ PIPELINE_GOVERNISMO_DEPUTADOS_CONFIG_PRD = {
     tags=["radar_congresso"],
 )
 def governismo_pipeline():
+    logger_g = logging.getLogger("DAG: governismo")
+
+
+    # Configuração (pode vir de .env, Airflow Variables, etc.)
+    PIPELINE_GOVERNISMO_DEPUTADOS_CONFIG_PRD = {
+        "url_base": "https://radar.congressoemfoco.com.br/api/governismo?casa=camara",
+        "landing_dir": "/usr/local/airflow/mylake/raw/demodados/radar_congresso/governismo/",
+        "landing_file": "radar_governismo_deputados.json",
+        "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/radar_congresso/governismo/",
+        "bronze_file": "radar_governismo_deputados.csv",
+        "db_table": "stg_radar_governismo_deputados",
+    }
+
     target = 'raw_radar_governismo_deputados'
     
     # Hook/engine do Postgres para dentro da DAG
