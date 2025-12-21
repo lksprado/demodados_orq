@@ -31,7 +31,7 @@ def governismo_pipeline():
         "landing_file": "radar_governismo_deputados.json",
         "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/radar_congresso/governismo/",
         "bronze_file": "radar_governismo_deputados.csv",
-        "db_table": "stg_radar_governismo_deputados",
+        "db_table": "stg_radar_governismo_deputados_raw",
     }
 
     target = 'raw_radar_governismo_deputados'
