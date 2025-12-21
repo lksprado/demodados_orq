@@ -1,0 +1,8 @@
+
+version: 2
+
+models:
+  - name: mrt_energia_clima
+    description: "A starter dbt model"
+  - name: mrt_energia_hora
+    description: "A starter dbt model"

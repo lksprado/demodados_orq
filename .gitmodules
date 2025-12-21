@@ -5,3 +5,9 @@
 	path = include/local_setup
 	url = https://github.com/lksprado/demodados.git
 	branch = main
+[submodule "include/Solar"]
+	path = include/Solar
+	url = https://github.com/lksprado/Solar.git
+[submodule "include/openweather"]
+	path = include/openweather
+	url = https://github.com/lksprado/openweather

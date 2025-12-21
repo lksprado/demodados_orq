@@ -1,0 +1,14 @@
+
+version: 2
+
+sources:
+  - name: raw
+    database: postgres
+    schema: raw
+    tables:
+    - name: solar_daily_energy
+      description: "Dados de energia solar diario"
+    - name: solar_hourly_energy
+      description: "Dados de energia solar por hora"
+    - name: openweather_daily
+      description: "Dados de clima por dia"

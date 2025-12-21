@@ -1,0 +1,28 @@
+
+version: 2
+
+models:
+  - name: stg_solar_daily_energy
+    description: "Energia solar diario"
+    columns:
+      - name: dt
+        description: "The unique key for this table"
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_solar_hourly_energy
+    description: "Energia solar por hora"
+    columns:
+      - name: dt_hora
+        description: "The unique key for this table"
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_weather_daily
+    description: "A starter dbt model"
+    columns:
+      - name: dt
+        description: "The unique key for this table"
+        data_tests:
+          - unique
+          - not_null
