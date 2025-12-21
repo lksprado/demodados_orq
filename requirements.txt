@@ -13,3 +13,5 @@ requests==2.32.5
 # sqlalchemy>=2.0.42
 unidecode==1.4.0
 astronomer-cosmos==1.10.1
+selenium
+apache-airflow-providers-amazon
