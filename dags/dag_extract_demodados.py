@@ -6,20 +6,18 @@ import pandas as pd
 from airflow.decorators import dag, task
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
-from src.utils.loaders.postgres import PostgreSQLManager
-
-logger = logging.getLogger("DAG: governismo")
-
-GOLD_DIR = "/usr/local/airflow/mylake/gold/"
 
 @dag(
-    dag_id="extract_marts",
+    dag_id="extract_demodados_marts",
     start_date=datetime(2025, 11, 17),
     schedule="55 2 * * *",
     catchup=False,
     tags=["gold"],
 )
 def extract_pipeline():
+    logger = logging.getLogger("DAG: governismo")
+
+    GOLD_DIR = "/usr/local/airflow/mylake/gold/"
 
     # Conexão com DW
     hook = PostgresHook(postgres_conn_id="demodadosdw")

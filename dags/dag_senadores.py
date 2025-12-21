@@ -1,13 +1,12 @@
 import logging
 from datetime import datetime
 
-import pandas as pd
 from airflow.decorators import dag, task
 
-from src.utils.pipeline_cfg import PipelineConfig, GenericETL
-from src.pipelines.legislativo.parlamento_senadores import transform_senadores
-from src.pipelines.legislativo.schema import SenadorSchema
-from src.utils.loaders.postgres import PostgreSQLManager
+from include.local_setup.src.utils.pipeline_cfg import PipelineConfig, GenericETL
+from include.local_setup.src.pipelines.legislativo.parlamento_senadores import transform_senadores
+from include.local_setup.src.pipelines.legislativo.schema import SenadorSchema
+from include.local_setup.src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 logger = logging.getLogger("DAG: governismo")
@@ -58,6 +57,9 @@ def senadores_pipeline():
     def t_validate():
         etl.validate()
 
+    @task
+    def t_create_schema():
+        pg.execute_query(f"CREATE SCHEMA IF NOT EXISTS raw")
 
     @task
     def t_load_staging():
@@ -95,12 +97,13 @@ def senadores_pipeline():
     extract = t_extract()
     transform = t_transform()
     validate  = t_validate()
+    create_raw = t_create_schema()
     load_staging = t_load_staging()
     check_staging = t_check_staging_count()
     insert_into_target = t_insert()
     drop_staging = t_drop_stg_if_exists()
     
-    extract >> transform >> validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
+    extract >> transform >> validate >> create_raw >> load_staging >> check_staging >> insert_into_target >> drop_staging
 
 # necessário para o Airflow reconhecer a DAG
 dag = senadores_pipeline()

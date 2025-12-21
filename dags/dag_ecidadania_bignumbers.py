@@ -3,9 +3,9 @@ from datetime import datetime
 
 from airflow.decorators import dag, task
 from pendulum import datetime, duration
-from src.utils.pipeline_cfg import PipelineConfig, GenericETL
-from src.pipelines.legislativo.ecidadania_big_numbers import extraction_big_numbers, transform_bignumbers
-from src.utils.loaders.postgres import PostgreSQLManager
+from include.local_setup.src.utils.pipeline_cfg import PipelineConfig, GenericETL
+from include.local_setup.src.pipelines.legislativo.ecidadania_big_numbers import extraction_big_numbers, transform_bignumbers
+from include.local_setup.src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 logger = logging.getLogger("DAG: Ecidadania BigNumbers")
@@ -57,6 +57,9 @@ def bignumbers_pipeline():
     def t_transform():
         transform_bignumbers(cfg)
 
+    @task
+    def t_create_schema():
+        pg.execute_query(f"CREATE SCHEMA IF NOT EXISTS raw")
 
     @task
     def t_load_staging():
@@ -92,13 +95,14 @@ def bignumbers_pipeline():
 
     extract = t_extract()
     transform = t_transform()
+    create_raw = t_create_schema()
     load_staging = t_load_staging()
     check_staging = t_check_staging_count()
     insert_into_target = t_insert()
     drop_staging = t_drop_stg_if_exists()
     
     # extract >> transform >> validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
-    extract >> transform >> load_staging >> check_staging >> insert_into_target >> drop_staging
+    extract >> transform >> create_raw >> load_staging >> check_staging >> insert_into_target >> drop_staging
     
 # 👇 necessário para o Airflow reconhecer a DAG
 dag = bignumbers_pipeline()

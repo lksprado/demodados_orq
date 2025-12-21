@@ -4,10 +4,10 @@ from datetime import datetime
 import pandas as pd
 from airflow.decorators import dag, task
 
-from src.utils.pipeline_cfg import PipelineConfig, GenericETL
-from src.pipelines.legislativo.radar_governismo import transform_governismo
-from src.pipelines.legislativo.schema import GovernismoSchema
-from src.utils.loaders.postgres import PostgreSQLManager
+from include.local_setup.src.utils.pipeline_cfg import PipelineConfig, GenericETL
+from include.local_setup.src.pipelines.legislativo.radar_governismo import transform_governismo
+from include.local_setup.src.pipelines.legislativo.schema import GovernismoSchema
+from include.local_setup.src.utils.loaders.postgres import PostgreSQLManager
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 
@@ -60,9 +60,13 @@ def governismo_pipeline():
     def t_transform():
         transform_governismo(cfg)
 
+    # @task
+    # def t_validate():
+    #     etl.validate()
+
     @task
-    def t_validate():
-        etl.validate()
+    def t_create_schema():
+        pg.execute_query(f"CREATE SCHEMA IF NOT EXISTS raw")
 
     @task
     def t_load_staging():
@@ -98,13 +102,15 @@ def governismo_pipeline():
     # ---------- Encadeamento ----------
     extract = t_extract()
     transform = t_transform()
-    validate  = t_validate()
+    # validate  = t_validate()
+    create_raw = t_create_schema()    
     load_staging = t_load_staging()
     check_staging = t_check_staging_count()
     insert_into_target = t_insert()
     drop_staging = t_drop_stg_if_exists()
     
-    extract >> transform >> validate >> load_staging >> check_staging >> insert_into_target >> drop_staging
+    # extract >> transform >> validate >> create_raw >> load_staging >> check_staging >> insert_into_target >> drop_staging
+    extract >> transform >> create_raw >> load_staging >> check_staging >> insert_into_target >> drop_staging
 
 # Necessário para o Airflow reconhecer a DAG
 dag = governismo_pipeline()

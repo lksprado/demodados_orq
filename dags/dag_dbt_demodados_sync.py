@@ -72,6 +72,33 @@ with my_cosmos_dag:
         mode="poke",
     )
 
+    aguarda_ranking = ExternalTaskSensor(
+        task_id="aguarda_ranking",
+        external_dag_id="	ranking_parlamentares_pipeline",
+        external_task_id=None,
+        allowed_states=["success"],
+        failed_states=["failed"],
+        mode="poke",
+    )
+
+    aguarda_ecidadania_bn = ExternalTaskSensor(
+        task_id="aguarda_ecidadania_bn",
+        external_dag_id="ecidadania_bignumbers_pipeline",
+        external_task_id=None,
+        allowed_states=["success"],
+        failed_states=["failed"],
+        mode="poke",
+    )
+
+    aguarda_ecidadania_maisvotados = ExternalTaskSensor(
+        task_id="aguarda_maisvotados_bn",
+        external_dag_id="	ecidadania_maisvotados_pipeline",
+        external_task_id=None,
+        allowed_states=["success"],
+        failed_states=["failed"],
+        mode="poke",
+    )
+
     # Pegue a primeira task criada automaticamente pelo cosmos
     primeira_task_dbt = list(my_cosmos_dag.tasks)[0]  # isso pega a primeira task do DAG
 
@@ -79,3 +106,6 @@ with my_cosmos_dag:
     aguarda_deputados >> primeira_task_dbt
     aguarda_senadores >> primeira_task_dbt
     aguarda_parlamentares >> primeira_task_dbt
+    aguarda_ranking >> primeira_task_dbt
+    aguarda_ecidadania_bn >> primeira_task_dbt
+    aguarda_ecidadania_maisvotados >> primeira_task_dbt
