@@ -13,8 +13,8 @@ logger = logging.getLogger("DAG: Ecidadania MaisVotados")
 
 PIPELINE_CONFIG_PRD = {
     "url_base": "https://www12.senado.leg.br/ecidadania/principalmateria",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/senado/ecidadania/mais_votados",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/senado/ecidadania/mais_votados",
+    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/ecidadania/mais_votados",
+    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/ecidadania/mais_votados",
     "bronze_file": "ecidadania_mais_votados_consolidado.csv",
     "db_table": "stg_ecidadania_mais_votados_raw",
 }

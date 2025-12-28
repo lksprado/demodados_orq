@@ -51,9 +51,9 @@ def extract_pipeline():
     # Você pode ir adicionando/removendo tasks depois, bem fácil.
     #
 
-    @task(task_id="export_energia_e_clima")
+    @task(task_id="export_energia_clima")
     def export_export_energia_e_clima():
-        return _dump_table(schema="marts", table="mrt_energia_e_clima")
+        return _dump_table(schema="marts", table="mrt_energia_clima")
 
     @task(task_id="export_energia_hora")
     def export_energia_hora():

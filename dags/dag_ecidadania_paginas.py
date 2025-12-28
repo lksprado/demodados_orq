@@ -13,8 +13,8 @@ logger = logging.getLogger("DAG: Ecidadania Paginas")
 
 PIPELINE_CONFIG_PRD = {
     "url_base": "https://www12.senado.leg.br/ecidadania/principalmateria?p=",
-    "landing_dir": "/usr/local/airflow/mylake/raw/senado/ecidadania/paginas",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/senado/ecidadania/paginas",
+    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/ecidadania/paginas",
+    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/ecidadania/paginas",
     "bronze_file": "ecidadania_paginas_consolidado.csv",
     "db_table": "stg_ecidadania_paginas_raw",
 }

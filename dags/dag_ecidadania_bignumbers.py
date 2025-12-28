@@ -13,8 +13,8 @@ logger = logging.getLogger("DAG: Ecidadania BigNumbers")
 
 PIPELINE_CONFIG_PRD = {
     "url_base": "https://www12.senado.leg.br/ecidadania/principalmateria",
-    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/senado/ecidadania/big_numbers",
-    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/senado/ecidadania/big_numbers",
+    "landing_dir": "/usr/local/airflow/mylake/raw/demodados/ecidadania/big_numbers",
+    "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/ecidadania/big_numbers",
     "bronze_file": "ecidadania_bignumbers_consolidado.csv",
     "db_table": "stg_ecidadania_bignumbers_raw",
 }

@@ -12,11 +12,11 @@ logger = logging.getLogger("DAG: Ecidadania Status")
 
 
 PIPELINE_CONFIG_PRD = {
-        "landing_dir": "/usr/local/airflow/mylake/raw/senado/status",
-        "bronze_dir": "/usr/local/airflow/mylake/bronze/senado/status",
+        "landing_dir": "/usr/local/airflow/mylake/raw/demodados/ecidadania/status",
+        "bronze_dir": "/usr/local/airflow/mylake/bronze/demodados/ecidadania/status",
         "bronze_file": "senado_status_consolidado.csv",
         "db_table": "stg_senado_status_raw",
-        "parameter_file": "/usr/local/airflow/mylake/bronze/senado/ecidadania/paginas/ecidadania_paginas_consolidado.csv",
+        "parameter_file": "/usr/local/airflow/mylake/bronze/demodados/ecidadania/paginas/ecidadania_paginas_consolidado.csv",
 }
 
 @dag(
