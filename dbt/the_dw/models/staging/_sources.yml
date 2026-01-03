@@ -12,3 +12,21 @@ sources:
       description: "Dados de energia solar por hora"
     - name: openweather_daily
       description: "Dados de clima por dia"
+    - name: nhl_raw_all_games_summary
+      description: "Resumo de todos os jogos que já ocorreram e os agendados. Atualizar diariamente."
+    - name: nhl_raw_all_seasons_id
+      description: "Lista com todas as temporadas."
+    - name: nhl_raw_all_games_details
+      description: "Detalhe dos jogos que já ocorreram. Atualizar diariamente, cruzando com nhl_raw_all_games_summary."
+    - name: nhl_raw_all_teams_id
+      description: "Dimensão de todos os times que já existiram. Atualizar anualmente."
+    - name: nhl_raw_all_games_summary_details
+      description: "Estatísticas dos jogos que já ocorreram. Atualizar diariamente, cruzando com nhl_raw_all_games_summary."
+    - name: nhl_raw_all_club_stats
+      description: "Estatísticas dos jogadores por time e temporadas. Atualizar diariamente."
+    - name: nhl_raw_all_players
+      description: "Detalhes e  estatísticas dos jogadores por tipo de temporada. Atualizar diariamente."
+    - name: nhl_raw_all_player_game_log
+      description: "Estatísticas dos jogadores por jogo. Atualizar diariamente."
+    - name: nhl_raw_all_play_by_play
+      description: "Todos eventos de um jogo. Atualizar diariamente, cruzando com nhl_raw_all_games_summary."

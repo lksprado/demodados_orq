@@ -32,6 +32,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   the_dw:
     # Config indicated by + and applies to all files under models/example/
+    sources:
+      +materialized: table
+      +schema: staging
     staging:
       +materialized: table
       +schema: staging

@@ -26,3 +26,19 @@ models:
         data_tests:
           - unique
           - not_null
+  - name: stg_all_games_summary
+    description: "A starter dbt model"
+    columns:
+      - name: game_id
+        description: "The unique key for this table"
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_all_games_summary_details
+    description: "A starter dbt model"
+    columns:
+      - name: game_id
+        description: "The unique key for this table"
+        data_tests:
+          - unique
+          - not_null
