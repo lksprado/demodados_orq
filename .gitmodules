@@ -11,3 +11,12 @@
 [submodule "include/openweather"]
 	path = include/openweather
 	url = https://github.com/lksprado/openweather
+[submodule "dbt/my_datawarehouse"]
+	path = dbt/my_datawarehouse
+	url = git@github.com-pessoal:lksprado/my_datawarehouse.git
+[submodule "include/nhl-extraction"]
+	path = include/nhl-extraction
+	url = git@github.com-pessoal:lksprado/nhl-extraction.git
+[submodule "include/nhl_extraction"]
+	path = include/nhl_extraction
+	url = git@github.com-pessoal:lksprado/nhl-extraction.git

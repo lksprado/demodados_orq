@@ -1,12 +1,10 @@
 from airflow.models import Variable
 from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig
 from cosmos.profiles import PostgresUserPasswordProfileMapping
-from airflow.sensors.external_task import ExternalTaskSensor
 import os
-from pendulum import datetime
 
 profile_config_dev = ProfileConfig(
-    profile_name="datawarehouse",
+    profile_name="my_datawarehouse",
     target_name="dev",
     profile_mapping=PostgresUserPasswordProfileMapping(
         conn_id="postgres_dw",
@@ -14,12 +12,12 @@ profile_config_dev = ProfileConfig(
     ),
 )
 
-dbt_env = Variable.get("dbt_env", default_var="dev").lower()
+# dbt_env = Variable.get("dbt_env", default_var="dev").lower()
 
 
 my_cosmos_dag = DbtDag(
     project_config=ProjectConfig(
-        dbt_project_path="/usr/local/airflow/dbt/the_dw", ### caminho dentro da maquina docker
+        dbt_project_path="/usr/local/airflow/dbt/my_datawarehouse", ### caminho dentro da maquina docker
         project_name="the_dw",
     ),
     profile_config=profile_config_dev,
@@ -33,6 +31,6 @@ my_cosmos_dag = DbtDag(
     schedule="@weekly",
     # start_date=datetime(2025, 10, 25, 21, 5),
     catchup=False,
-    dag_id=f"dag_the_dw_{dbt_env}_full",
+    dag_id=f"dag_mydw_dbt",
     default_args={"retries": 2},
 )
