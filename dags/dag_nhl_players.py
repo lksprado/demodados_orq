@@ -24,7 +24,7 @@ default_args = {
     dag_id="nhl_all_players",
     default_args=default_args,
     description="ETL for NHL Data with dbt",
-    schedule="00 06 * * *",
+    schedule=None,
     catchup=False,
 )
 def nhl_all_players():

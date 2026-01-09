@@ -24,8 +24,9 @@ default_args = {
     dag_id="nhl_games_play_by_play",
     default_args=default_args,
     description="ETL for NHL Data with dbt",
-    schedule="00 06 * * *",
+    schedule=None,
     catchup=False,
+    tags=["nhl"]
 )
 def nhl_games_play_by_play():
     config = get_all_games_play_by_play_endpoint()

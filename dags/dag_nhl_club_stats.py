@@ -24,8 +24,9 @@ default_args = {
     dag_id="nhl_club_stats",
     default_args=default_args,
     description="ETL for NHL Data with dbt",
-    schedule="00 06 * * *",
+    schedule=None,
     catchup=False,
+    tags=["nhl"]
 )
 def nhl_club_stats():
     config = get_all_club_stats_endpoint()

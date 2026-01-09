@@ -24,8 +24,9 @@ default_args = {
     dag_id="nhl_games_summary_details",
     default_args=default_args,
     description="ETL for NHL Data with dbt",
-    schedule="00 06 * * *",
+    schedule=None,
     catchup=False,
+    tags=["nhl"]
 )
 def nhl_games_summary_details():
     config = get_all_games_summary_details_endpoint()

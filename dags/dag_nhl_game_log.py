@@ -24,8 +24,9 @@ default_args = {
     dag_id="nhl_game_log",
     default_args=default_args,
     description="ETL for NHL Data with dbt",
-    schedule="00 06 * * *",
+    schedule=None,
     catchup=False,
+    tags=["nhl"]
 )
 def nhl_game_log():
     config = get_all_players_gamelog_endpoint()
