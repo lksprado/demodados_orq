@@ -28,6 +28,7 @@ default_args = {
     description="ETL for NHL Data with dbt",
     schedule="00 00 01 10 *",
     catchup=False,
+    tags=["nhl"]
 )
 def nhl_seasons():
     config = get_all_seasons_id_endpoint()

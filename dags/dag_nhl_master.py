@@ -122,6 +122,13 @@ def nhl_master_pipeline():
         reset_dag_run=True,
     )
 
+    trigger_players = TriggerDagRunOperator(
+        task_id="trigger_players",
+        trigger_dag_id="nhl_all_players",
+        wait_for_completion=True,
+        reset_dag_run=True,
+    )
+
     # -----------------------------
     # 4️⃣ DBT RUN FINAL
     # -----------------------------
@@ -159,6 +166,7 @@ def nhl_master_pipeline():
         trigger_games_play_by_play,
         trigger_game_log,
         trigger_club_stats,
+        trigger_players
     ] >> dbt_run_final
 
 

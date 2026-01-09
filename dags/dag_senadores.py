@@ -27,7 +27,7 @@ PIPELINE_SENADORES_CONFIG_PRD = {
     # schedule="@weekly",
     schedule=None,
     catchup=False,
-    tags=["senado"],
+    tags=["demodados"],
 )
 def senadores_pipeline():
     target = 'raw_parlamento_senadores' 

@@ -26,6 +26,7 @@ default_args = {
     description="ETL for NHL Data with dbt",
     schedule=None,
     catchup=False,
+    tags=["nhl"]
 )
 def nhl_all_players():
     config = get_all_players_endpoint()

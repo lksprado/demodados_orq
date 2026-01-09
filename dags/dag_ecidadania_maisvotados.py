@@ -30,7 +30,7 @@ PIPELINE_CONFIG_PRD = {
         "max_retry_delay": duration(hours=1),
     },
     catchup=False,
-    tags=["ecidadania"],
+    tags=["demodados"],
 )
 
 def maisvotados_pipeline():

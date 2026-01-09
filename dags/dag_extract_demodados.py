@@ -12,7 +12,7 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
     start_date=datetime(2025, 11, 17),
     schedule="55 2 * * *",
     catchup=False,
-    tags=["gold"],
+    tags=["demodados"],
 )
 def extract_pipeline():
     logger = logging.getLogger("DAG: governismo")

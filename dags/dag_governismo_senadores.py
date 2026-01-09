@@ -15,7 +15,7 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
     start_date=datetime(2025, 10, 24),
     schedule="@weekly",
     catchup=False,
-    tags=["radar_congresso"],
+    tags=["demodados"],
 )
 def governismo_pipeline():
 

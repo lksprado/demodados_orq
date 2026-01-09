@@ -18,7 +18,7 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
     start_date=datetime(2025, 10, 24),
     schedule="@weekly",
     catchup=False,
-    tags=["ranking_politicos"],
+    tags=["demodados"],
 )
 def parlamentares_pipeline():
 

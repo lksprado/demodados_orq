@@ -88,6 +88,7 @@ query_kill_stg = """
     start_date= datetime(2025, 9, 21),
     schedule=None,
     catchup=False,
+    tags=["atibaia"]
 )
 
 def weather_etl_full():

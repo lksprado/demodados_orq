@@ -30,7 +30,7 @@ PIPELINE_CONFIG_PRD = {
         "retry_exponential_backoff": True,
         "max_retry_delay": duration(hours=1),
     },
-    tags=["ecidadania"],
+    tags=["demodados"],
 )
 
 def bignumbers_pipeline():

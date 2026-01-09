@@ -65,6 +65,7 @@ default_args = {
     description="ETL for Solar Data Recovery",
     schedule=None,
     catchup=False,
+    tags=["atibaia"]
 )
 def solar_etl_full():
     INPUT_FOLDER = "/opt/airflow/files/bronze/solar_project/"

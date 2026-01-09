@@ -83,6 +83,7 @@ default_args = {
     start_date=datetime(2025, 9, 21),
     schedule="55 23 * * *",
     catchup=False,
+    tags=["atibaia"]
 )
 def weather_etl():
     staging_folder = "/usr/local/airflow/mylake/staging/weather_project/"       # ajuste se existir

@@ -28,7 +28,7 @@ PIPELINE_DEPUTADOS_CONFIG_PRD = {
     # schedule="@weekly",
     schedule=None,
     catchup=False,
-    tags=["camara"],
+    tags=["demodados"],
 )
 def deputados_pipeline():
     target =  'raw_parlamento_deputados'

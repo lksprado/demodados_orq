@@ -69,6 +69,7 @@ default_args = {
     description="ETL for Solar Data",
     schedule="55 23 * * *",
     catchup=False,
+    tags=["atibaia"]
 )
 def solar_etl():
 
